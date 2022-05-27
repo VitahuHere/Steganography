@@ -22,7 +22,7 @@ int main(int argc, const char *argv[]) {
             break;
         case 4: decrypt();
             break;
-        case 5: check();
+        case 5: check(argv[2], argv[3]);
             break;
         default: invalidArgument(argv[1]);
             break;

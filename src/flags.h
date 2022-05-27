@@ -13,7 +13,7 @@ void encrypt();
 
 void decrypt();
 
-void check();
+void check(const std::string& path, const std::string& message);
 
 std::map<std::string, std::array<int, 2> > commandLineFlags();
 
