@@ -5,6 +5,8 @@
 #ifndef LEARNING_FLAGS_H
 #define LEARNING_FLAGS_H
 
+#include <map>
+
 void help();
 
 void info(const std::string& path);

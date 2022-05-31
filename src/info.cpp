@@ -2,19 +2,18 @@
 // Created by vumir on 26.05.2022.
 //
 #include <string>
-#include <regex>
 #include <iostream>
-#include <fstream>
 #include <algorithm>
-#include <sys/stat.h>
+#include <filesystem>
+#include <chrono>
 #include "flags.h"
 
+namespace fs = std::filesystem;
 
 bool isSupported(const std::string &path);
-long long getFileSize(const std::string &path);
-std::string getFileModifiedTime(const std::string &path);
 void printFileInfo(const std::string &path, const std::string &ext);
 std::string getFileExtension(const std::string &path);
+std::string getLastModified(const std::string &path);
 
 
 void info(const std::string &path) {
@@ -37,65 +36,31 @@ void info(const std::string &path) {
 }
 
 
+void printFileInfo(const std::string &path, const std::string &ext) {
+    std::cout << "File name: " << fs::path(path).filename() << std::endl;
+    std::cout << "File extension " + ext << std::endl;
+    std::cout << "File path " + path << std::endl;
+    std::cout << "File size " << std::to_string(fs::file_size(path)) << " bytes" << std::endl;
+    std::cout << "File modification date " << getLastModified(path) << std::endl;
+}
+
+
 std::string getFileExtension(const std::string &path) {
-    /**
-     * @brief Gets the file extension.
-     * @param path Path to the file.
-     * @return File extension.
-     * @details
-     * This function gets the file extension.
-     * It returns the file extension.
-     */
-    std::string extension;
-    std::string::size_type i = path.rfind('.', path.length());
-    if (i != std::string::npos) {
-        extension = path.substr(i + 1, path.length() - i);
-    }
-    return extension;
+    fs::path p(path);
+    return p.extension().string();
 }
 
 
 bool isSupported(const std::string &path){
-    /**
-     * @brief Checks if the file extension is supported.
-     * @param path Path to the file.
-     * @return True if the file extension is supported, false otherwise.
-     * @details
-     * This function checks if the file extension is supported.
-     * It takes the file extension from constant array specified in getSupportedExtensions().
-     * It returns true if the file extension is supported, false otherwise.
-     */
-    return std::ranges::any_of(getSupportedExtensions(), [&path](const std::string &ext) {
-        return std::regex_match(path, std::regex(".*\\." + ext + "$"));
+    fs::path p(path);
+    return std::ranges::any_of(getSupportedExtensions(), [&](const std::string &ext) {
+        return p.extension() == ext;
     });
 }
 
 
-void printFileInfo(const std::string &path, const std::string &ext) {
-    std::cout << "File extension " + ext << std::endl;
-    std::cout << "File path " + path << std::endl;
-    std::cout << "File size " << std::to_string(getFileSize(path)) << " bytes" << std::endl;
-    std::cout << "File last modified " << getFileModifiedTime(path) << std::endl;
-}
-
-
-long long getFileSize(const std::string &path) {
-    /**
-     * @brief Gets the file size.
-     * @param path Path to the file.
-     * @return File size.
-     * @details
-     * This function gets the file size.
-     * Instead of looping through the file, it uses built in seekg() function.
-     */
-    std::ifstream file(path);
-    file.seekg(0, std::ios::end);
-    return file.tellg();
-}
-
-
-std::string getFileModifiedTime(const std::string &path) {
-    struct stat attr{};
-    stat(path.c_str(), &attr);
-    return ctime(&attr.st_mtime);
+std::string getLastModified(const std::string &path) {
+    auto last_write_time = fs::last_write_time(path);
+    std::time_t last_write_time_t = std::chrono::system_clock::to_time_t(std::chrono::file_clock::to_sys(last_write_time));
+    return std::asctime(std::localtime(&last_write_time_t));
 }
