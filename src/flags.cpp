@@ -20,7 +20,7 @@ std::map<std::string, std::array<int, 2> > commandLineFlags() {
 }
 
 std::vector<std::string> getSupportedExtensions(){
-    return std::vector<std::string> {".png", ".bmp"};
+    return std::vector<std::string> {".ppm", ".bmp"};
 }
 
 std::string invalidArgument(const std::string& arg) {
