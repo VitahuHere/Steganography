@@ -15,13 +15,19 @@ void encryptForPpm(const std::string &path, std::string message);
 
 std::array<unsigned char, 8> toBinary(unsigned char decimal);
 
+std::string fillMessage(const std::string &message);
+
+void writeToFile(std::fstream &file, const std::string &message);
+
+void offsetPpm(std::fstream &file);
+
 
 void encrypt(const std::string &path, const std::string &message) {
     if (!isSupported(path)) {
         std::cout << "File extension is not supported." << std::endl;
         return;
     }
-    if (!check(path, message) && std::to_string(message.size()).size() > 4) {
+    if (!check(path, message) && std::to_string(message.size()).size() > MAX_MESSAGE_SIZE) {
         std::cout << "Message is too long. Cannot store" << std::endl;
         return;
     }
@@ -34,32 +40,55 @@ void encrypt(const std::string &path, const std::string &message) {
 
 
 void encryptForBmp(const std::string &path, std::string message) {
-    while(std::to_string(message.size()).size() < 4) {
-        message.insert(0, "0");
-    }
-    std::cout<<message<<std::endl;
+    /**
+     * @brief Encrypts message to bmp file
+     * @param path - path to file
+     * @param message - message to encrypt
+     * @return
+     * @details
+     * Function determines message length and fills the message length string with '0' to fill up the MAX_MESSAGE_SIZE.
+     * Then encrypts message. Using simple principal:
+     *    - for each character in message, we get binary value of a character then convert it to array of 8 bits
+     *    - for each bit in array we take 1 byte from file and change LSB to be exactly the same as bit in array
+     *    - we write new byte to file
+     */
+    message = fillMessage(message);
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
-    file.seekg(10, std::ios::beg);
-    int offset;
-    file.read((char *) &offset, sizeof(offset));
-    file.seekg(offset, std::ios::beg);
-    for (char c : message){
-        std::array<unsigned char, 8> binary = toBinary(c);
-        for (int i = 0; i < 8; i++) {
-            unsigned char ch = file.get();
-            std::cout<<(int)ch<<std::endl;
-            ch ^= (-binary[i] ^ ch) & 0x01;
-            std::cout<<(int)ch<<std::endl;
-            file.seekp(-1, std::ios::cur);
-            file<<ch;
-        }
-    }
+    file.seekg(getCharOffsetBmp(path), std::ios::beg);
+    writeToFile(file, message);
     file.close();
 }
 
 
 void encryptForPpm(const std::string &path, std::string message) {
-    message = std::to_string(message.size()) + message;
+    message = fillMessage(message);
+    std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
+    offsetPpm(file);
+    writeToFile(file, message);
+    file.close();
+}
+
+
+void offsetPpm(std::fstream &file){
+    std::string c;
+    std::getline(file, c);
+    do {
+        std::getline(file, c);
+    } while(c[0] == '#');
+    std::getline(file, c);
+}
+
+
+void writeToFile(std::fstream &file, const std::string &message) {
+    for (char c : message){
+        std::array<unsigned char, 8> binary = toBinary(c);
+        for (int i = 0; i < 8; i++) {
+            unsigned char ch = file.get();
+            ch ^= (-binary[i] ^ ch) & 0x01;
+            file.seekp(-1, std::ios::cur);
+            file<<ch;
+        }
+    }
 }
 
 
@@ -70,4 +99,13 @@ std::array<unsigned char, 8> toBinary(unsigned char decimal) {
         decimal /= 2;
     }
     return binary;
+}
+
+
+std::string fillMessage(const std::string &message) {
+    std::string size = std::to_string(message.size());
+    while (size.size() < MAX_MESSAGE_SIZE) {
+        size.insert(0, "0");
+    }
+    return (size + message);
 }

@@ -35,7 +35,7 @@ int main(int argc, const char *argv[]) {
             encrypt(argv[2], argv[3]);
             break;
         case 4:
-            decrypt();
+            decrypt(argv[2]);
             break;
         case 5:
             check(argv[2], argv[3], true);

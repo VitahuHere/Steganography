@@ -13,7 +13,7 @@ void info(const std::string &path);
 
 void encrypt(const std::string &path, const std::string &message);
 
-void decrypt();
+void decrypt(const std::string &path);
 
 void check(const std::string &path, const std::string &message, bool output = false);
 

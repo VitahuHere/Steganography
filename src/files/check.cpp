@@ -44,8 +44,8 @@ bool check(const std::string &path, const std::string &message, bool output = fa
 bool checkForBmp(const std::string &path, const std::string &message, bool output) {
     /**
      * @brief Checks if file can store specified data
-     * @param path Path to file
-     * @param message Message to be encoded in file
+     * @param path - Path to file
+     * @param message - Message to be encoded in file
      * @details
      * Gets image dimensions from file header and calculates available pixels.
      * Then checks if message can be encoded in file.
