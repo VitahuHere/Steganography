@@ -23,12 +23,25 @@ void offsetPpm(std::fstream &file);
 
 
 void encrypt(const std::string &path, const std::string &message) {
+    /**
+     * @brief Encrypts message to file with given path
+     * @param path - path to file
+     * @param message - message to encrypt
+     * @return void
+     * @details
+     * Function determines if file extension is supported, then if message can fit inside the file
+     * and finally calls appropriate function if no error is raised.
+     */
     if (!isSupported(path)) {
         std::cout << "File extension is not supported." << std::endl;
         return;
     }
-    if (!check(path, message) && std::to_string(message.size()).size() > MAX_MESSAGE_SIZE) {
+    if (std::to_string(message.size()).size() > MAX_MESSAGE_SIZE) {
         std::cout << "Message is too long. Cannot store" << std::endl;
+        return;
+    }
+    if (!getFilePermissions(path).at("others_write")) {
+        std::cout << "File is not writable." << std::endl;
         return;
     }
     if (getFileExtension(path) == ".bmp") {
@@ -44,13 +57,14 @@ void encryptForBmp(const std::string &path, std::string message) {
      * @brief Encrypts message to bmp file
      * @param path - path to file
      * @param message - message to encrypt
-     * @return
+     * @return void
      * @details
      * Function determines message length and fills the message length string with '0' to fill up the MAX_MESSAGE_SIZE.
      * Then encrypts message. Using simple principal:
      *    - for each character in message, we get binary value of a character then convert it to array of 8 bits
      *    - for each bit in array we take 1 byte from file and change LSB to be exactly the same as bit in array
      *    - we write new byte to file
+     *    - repeat until all bits are written
      */
     message = fillMessage(message);
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
@@ -61,6 +75,19 @@ void encryptForBmp(const std::string &path, std::string message) {
 
 
 void encryptForPpm(const std::string &path, std::string message) {
+    /**
+     * @brief Encrypts message to ppm file
+     * @param path - path to file
+     * @param message - message to encrypt
+     * @return void
+     * @details
+     * Function determines message length and fills the message length string with '0' to fill up the MAX_MESSAGE_SIZE.
+     * Then encrypts message. Using simple principal:
+     *   - for each character in message, we get binary value of a character then convert it to array of 8 bits
+     *   - for each bit in array we take 1 byte from file and change LSB to be exactly the same as bit in array
+     *   - we write new byte to file
+     *   - repeat until all bits are written
+     */
     message = fillMessage(message);
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
     offsetPpm(file);
@@ -69,24 +96,45 @@ void encryptForPpm(const std::string &path, std::string message) {
 }
 
 
-void offsetPpm(std::fstream &file){
+void offsetPpm(std::fstream &file) {
+    /**
+     * @brief Offsets ppm file to the right position
+     * @param file - file stream
+     * @return void
+     * @details
+     * Function offsets file stream to the right position.
+     * It skips header of the file and stops at the first byte of the pixel array.
+     * It is used to make sure that we are writing to the pixel array position in ppm file and not damage the header.
+     */
     std::string c;
     std::getline(file, c);
     do {
         std::getline(file, c);
-    } while(c[0] == '#');
+    } while (c[0] == '#');
     std::getline(file, c);
 }
 
 
 void writeToFile(std::fstream &file, const std::string &message) {
-    for (char c : message){
+    /**
+     * @brief Writes message to file
+     * @param file - file stream
+     * @param message - message to write
+     * @return void
+     * @details
+     * Function writes message to file.
+     * It iterates through message and for each character in message, we get binary value of a character then convert it to array of 8 bits.
+     * For each bit in array we take 1 byte from file and change LSB to be exactly the same as bit in array.
+     * We write new byte to file.
+     * We repeat until all bits are written.
+     */
+    for (char c: message) {
         std::array<unsigned char, 8> binary = toBinary(c);
         for (int i = 0; i < 8; i++) {
             unsigned char ch = file.get();
             ch ^= (-binary[i] ^ ch) & 0x01;
             file.seekp(-1, std::ios::cur);
-            file<<ch;
+            file << ch;
         }
     }
 }

@@ -31,6 +31,10 @@ bool check(const std::string &path, const std::string &message, bool output = fa
         std::cout << "File " << path << " is not readable" << std::endl;
         return false;
     }
+    if (!getFilePermissions(path).at("others_write")) {
+        std::cout << "File " << path << " is not writable" << std::endl;
+        return false;
+    }
     bool canStore = false;
     if (getFileExtension(path) == ".bmp") {
         canStore = checkForBmp(path, message, output);
