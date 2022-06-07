@@ -15,13 +15,15 @@ bool checkForPpm(const std::string &path, const std::string &message, bool outpu
 
 
 /**
-     * @brief Checks if file can store specified data
-     * @param path Path to file
-     * @param message Message to be encoded in file
-     * @details
-     * Checks if file is supported by program, then checks if having sufficient permissions to write to file.
-     * If file is supported and having sufficient permissions, checks if file can store specified message.
-     */
+ * @brief Checks if file can store specified data
+ * @param path Path to file
+ * @param message Message to be encoded in file
+ * @param output If true, then output will be printed, default is false
+ * @return True if file can store data, false otherwise
+ * @details
+ * Checks if file is supported by program, then checks if having sufficient permissions to write to file.
+ * If file is supported and having sufficient permissions, checks if file can store specified message.
+ */
 bool check(const std::string &path, const std::string &message, bool output = false) {
     if (!isSupported(path)) {
         std::cout << "File " << path << " is not supported" << std::endl;
@@ -46,14 +48,16 @@ bool check(const std::string &path, const std::string &message, bool output = fa
 
 
 /**
-     * @brief Checks if file can store specified data
-     * @param path - Path to file
-     * @param message - Message to be encoded in file
-     * @details
-     * Gets image dimensions from file header and calculates available pixels.
-     * Then checks if message can be encoded in file.
-     * It does so by calculating number of characters and multiplying it by 8, then comparing it to number of available pixels.
-     */
+ * @brief Checks if file can store specified data
+ * @param path - Path to file
+ * @param message - Message to be encoded in file
+ * @param output - If true, then output will be printed
+ * @return True if file can store data, false otherwise
+ * @details
+ * Gets image dimensions from file header and calculates available pixels.
+ * Then checks if message can be encoded in file.
+ * It does so by calculating number of characters and multiplying it by 8, then comparing it to number of available pixels.
+ */
 bool checkForBmp(const std::string &path, const std::string &message, bool output) {
     std::fstream p(path, std::ios::in | std::ios::binary);
     unsigned char width[4];
@@ -80,15 +84,17 @@ bool checkForBmp(const std::string &path, const std::string &message, bool outpu
 
 
 /**
-     * @brief Checks if file can store specified data
-     * @param path Path to file
-     * @param message Message to be encoded in file
-     * @details
-     * Gets image dimensions from file header and calculates available pixels.
-     * Then checks if message can be encoded in file.
-     * It does so by calculating number of characters and multiplying it by 8, then comparing it to number of available pixels.
-     */
-bool checkForPpm(const std::string &path, const std::string &message, bool output = true) {
+ * @brief Checks if file can store specified data
+ * @param path Path to file
+ * @param message Message to be encoded in file
+ * @param output If true, then output will be printed
+ * @return True if file can store data, false otherwise
+ * @details
+ * Gets image dimensions from file header and calculates available pixels.
+ * Then checks if message can be encoded in file.
+ * It does so by calculating number of characters and multiplying it by 8, then comparing it to number of available pixels.
+ */
+bool checkForPpm(const std::string &path, const std::string &message, bool output) {
     std::fstream p(path, std::ios::in | std::ios::binary);
     std::string c;
     std::getline(p, c);

@@ -3,6 +3,8 @@
 //
 #include <iostream>
 
+
+// Display general help message
 void help() {
     const char *helpMessage = R"(Picture stenography program.
     Encode and decode messages hidden inside images.

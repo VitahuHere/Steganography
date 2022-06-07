@@ -4,16 +4,16 @@
 
 
 /**
-     * @brief Main function.
-     * @param argc Number of arguments.
-     * @param argv Array of arguments.
-     * @return void
-     * @details
-     * This function is the main function.
-     * Depending on specified flag, it calls the appropriate function and passes appropriate parameters.
-     * If there are no arguments or flags, it prints general help.
-     * If there are too little or too many arguments, it prints an error message.
-     */
+ * @brief Main function.
+ * @param argc Number of arguments.
+ * @param argv Array of arguments.
+ * @return void
+ * @details
+ * This function is the main function.
+ * Depending on specified flag, it calls the appropriate function and passes appropriate parameters.
+ * If there are no arguments or flags, it prints general help.
+ * If there are too little or too many arguments, it prints an error message.
+ */
 int main(int argc, const char *argv[]) {
     if (argc == 1) {
         help();

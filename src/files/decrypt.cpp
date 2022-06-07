@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
 #include <array>
 #include <cmath>
 #include "../headers/info.h"
@@ -23,13 +22,13 @@ void getMessage(std::fstream &file, int length);
 
 
 /**
-     * @brief Decrypts file
-     * @param path - Path to file
-     * @return void
-     * @details
-     * Checks if file is supported by program, then checks if having sufficient permissions to read file.
-     * Calls appropriate function to decrypt file.
-     */
+ * @brief Decrypts file
+ * @param path - Path to file
+ * @return void
+ * @details
+ * Checks if file is supported by program, then checks if having sufficient permissions to read file.
+ * Calls appropriate function to decrypt file.
+ */
 void decrypt(const std::string &path) {
     if (!isSupported(path)) {
         std::cout << "File extension is not supported." << std::endl;
@@ -48,17 +47,20 @@ void decrypt(const std::string &path) {
 
 
 /**
-     * @brief Decrypts message from bmp file
-     * @param path - path to file
-     * @return
-     * @details
-     * Function determines message length and offsets its pointer by length * 8.
-     * Then decrypts message. Using simple principal:
-     *     - for each character in message, we get 8 bits from file
-     *     - for each byte we take LSB and store it in array
-     *     - we convert array to decimal and read it as char
-     *     - we add char to final string
-     */
+ * @brief Decrypts message from bmp file
+ * @param path - path to file
+ * @return void
+ * @details
+ * Function determines message length and offsets its pointer by length * 8.
+ * Then decrypts message. Using simple principal:
+ *     - for each character in message, we get 8 bits from file
+ *     - for each byte we take LSB and store it in array
+ *     - we convert array to decimal and read it as char
+ *     - we add char to final string
+ * @example
+ * steganography.exe -d test.bmp
+ * example output: Hello
+ */
 void decryptForBmp(const std::string &path) {
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
     file.seekg(getCharOffsetBmp(path), std::ios::beg);
@@ -70,17 +72,20 @@ void decryptForBmp(const std::string &path) {
 
 
 /**
-     * @brief Decrypts message from ppm file
-     * @param path - path to file
-     * @return
-     * @details
-     * Function determines message length and offsets its pointer by length * 8.
-     * Then decrypts message. Using simple principal:
-     *     - for each character in message, we get 8 bits from file
-     *     - for each byte we take LSB and store it in array
-     *     - we convert array to decimal and read it as char
-     *     - we add char to final string
-     */
+ * @brief Decrypts message from ppm file
+ * @param path - path to file
+ * @return void
+ * @details
+ * Function determines message length and offsets its pointer by length * 8.
+ * Then decrypts message. Using simple principal:
+ *     - for each character in message, we get 8 bits from file
+ *     - for each byte we take LSB and store it in array
+ *     - we convert array to decimal and read it as char
+ *     - we add char to final string
+ * @example
+ * steganography.exe -d test.ppm
+ * example output: Hello
+ */
 void decryptForPpm(const std::string &path) {
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
     offsetPpm(file);
@@ -102,14 +107,14 @@ int binaryToDecimal(std::array<unsigned char, 8> binary) {
 
 
 /**
-     * @brief Gets offset of message in bmp file
-     * @param path - path to file
-     * @return offset of message in file
-     * @details
-     * Function gets offset of message in file.
-     * Move pointer to 10th byte in header file to read next 4 bytes which is offset of pixel array.
-     *
-     */
+ * @brief Gets offset of message in bmp file
+ * @param path - path to file
+ * @return offset of message in file
+ * @details
+ * Function gets offset of message in file.
+ * Move pointer to 10th byte in header file to read next 4 bytes which is offset of pixel array.
+ *
+ */
 int getCharOffsetBmp(const std::string &path) {
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
     file.seekg(10, std::ios::beg);
@@ -121,17 +126,17 @@ int getCharOffsetBmp(const std::string &path) {
 
 
 /**
-     * @brief Gets length of message in file
-     * @param file - file stream
-     * @return length of message in file
-     * @details
-     * Function gets length of message in file.
-     * Given file stream is already opened and in the right position, for each character in message,
-     * we get 8 bits from file. For each byte we take LSB and store it in array.
-     * We convert array to decimal and read it as char.
-     * We add char to final string.
-     * We return length of message.
-     */
+ * @brief Gets length of message in file
+ * @param file - file stream
+ * @return length of message in file
+ * @details
+ * Function gets length of message in file.
+ * Given file stream is already opened and in the right position, for each character in message,
+ * we get 8 bits from file. For each byte we take LSB and store it in array.
+ * We convert array to decimal and read it as char.
+ * We add char to final string.
+ * We return length of message.
+ */
 int getMessageLength(std::fstream &file) {
     std::array<unsigned char, MAX_MESSAGE_SIZE * 8> size{};
     for (int i = 0; i < MAX_MESSAGE_SIZE * 8; i++) {
@@ -150,18 +155,18 @@ int getMessageLength(std::fstream &file) {
 
 
 /**
-     * @brief Gets message from file
-     * @param file - file stream
-     * @param length - length of message
-     * @return void
-     * @details
-     * Function gets message from file.
-     * Given file stream is already opened and in the right position, for each character in message,
-     * we get 8 bits from file. For each byte we take LSB and store it in array.
-     * We convert array to decimal and read it as char.
-     * We add char to final string.
-     * We print message.
-     */
+ * @brief Gets message from file
+ * @param file - file stream
+ * @param length - length of message
+ * @return void
+ * @details
+ * Function gets message from file.
+ * Given file stream is already opened and in the right position, for each character in message,
+ * we get 8 bits from file. For each byte we take LSB and store it in array.
+ * We convert array to decimal and read it as char.
+ * We add char to final string.
+ * We print message.
+ */
 void getMessage(std::fstream &file, int length) {
     std::string message;
     for (int i = 0; i < length; i++) {
