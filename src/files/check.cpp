@@ -68,7 +68,7 @@ bool checkForBmp(const std::string &path, const std::string &message, bool outpu
 
     int pixel_count = width_ * height_;
     if (output) {
-        if (pixel_count >= message.size() * 8) {
+        if (pixel_count >= message.size() * 8 + MAX_MESSAGE_SIZE*8) {
             std::cout << "File " << path << " can store message" << std::endl;
         } else {
             std::cout << "File " << path << " can not store message" << std::endl;
@@ -113,7 +113,7 @@ bool checkForPpm(const std::string &path, const std::string &message, bool outpu
     int height_ = std::stoi(c);
     int pixel_count = width_ * height_;
     if (output) {
-        if (pixel_count >= message.size() * 8) {
+        if (pixel_count >= message.size() * 8 + MAX_MESSAGE_SIZE*8) {
             std::cout << "File " << path << " can store message" << std::endl;
         } else {
             std::cout << "File " << path << " can not store message" << std::endl;
@@ -121,14 +121,4 @@ bool checkForPpm(const std::string &path, const std::string &message, bool outpu
     }
     p.close();
     return pixel_count >= message.size() * 8;
-}
-
-
-bool checkForBmp(const std::string &path, const std::string &message){
-    return checkForBmp(path, message, false);
-}
-
-
-bool checkForPpm(const std::string &path, const std::string &message){
-    return checkForPpm(path, message, false);
 }
