@@ -14,8 +14,7 @@ bool checkForBmp(const std::string &path, const std::string &message, bool outpu
 bool checkForPpm(const std::string &path, const std::string &message, bool output);
 
 
-bool check(const std::string &path, const std::string &message, bool output = false) {
-    /**
+/**
      * @brief Checks if file can store specified data
      * @param path Path to file
      * @param message Message to be encoded in file
@@ -23,6 +22,7 @@ bool check(const std::string &path, const std::string &message, bool output = fa
      * Checks if file is supported by program, then checks if having sufficient permissions to write to file.
      * If file is supported and having sufficient permissions, checks if file can store specified message.
      */
+bool check(const std::string &path, const std::string &message, bool output = false) {
     if (!isSupported(path)) {
         std::cout << "File " << path << " is not supported" << std::endl;
         return false;
@@ -45,8 +45,7 @@ bool check(const std::string &path, const std::string &message, bool output = fa
 }
 
 
-bool checkForBmp(const std::string &path, const std::string &message, bool output) {
-    /**
+/**
      * @brief Checks if file can store specified data
      * @param path - Path to file
      * @param message - Message to be encoded in file
@@ -55,6 +54,7 @@ bool checkForBmp(const std::string &path, const std::string &message, bool outpu
      * Then checks if message can be encoded in file.
      * It does so by calculating number of characters and multiplying it by 8, then comparing it to number of available pixels.
      */
+bool checkForBmp(const std::string &path, const std::string &message, bool output) {
     std::fstream p(path, std::ios::in | std::ios::binary);
     unsigned char width[4];
     p.seekg(18, std::ios::beg);
@@ -68,7 +68,7 @@ bool checkForBmp(const std::string &path, const std::string &message, bool outpu
 
     int pixel_count = width_ * height_;
     if (output) {
-        if (pixel_count >= message.size() * 8 + MAX_MESSAGE_SIZE*8) {
+        if (pixel_count >= message.size() * 8 + MAX_MESSAGE_SIZE * 8) {
             std::cout << "File " << path << " can store message" << std::endl;
         } else {
             std::cout << "File " << path << " can not store message" << std::endl;
@@ -79,8 +79,7 @@ bool checkForBmp(const std::string &path, const std::string &message, bool outpu
 }
 
 
-bool checkForPpm(const std::string &path, const std::string &message, bool output = true) {
-    /**
+/**
      * @brief Checks if file can store specified data
      * @param path Path to file
      * @param message Message to be encoded in file
@@ -89,23 +88,24 @@ bool checkForPpm(const std::string &path, const std::string &message, bool outpu
      * Then checks if message can be encoded in file.
      * It does so by calculating number of characters and multiplying it by 8, then comparing it to number of available pixels.
      */
+bool checkForPpm(const std::string &path, const std::string &message, bool output = true) {
     std::fstream p(path, std::ios::in | std::ios::binary);
     std::string c;
     std::getline(p, c);
     do {
         std::getline(p, c);
-    } while(c[0] == '#');
+    } while (c[0] == '#');
     std::string width_str;
     std::string height_str;
-    for (char ch : c) {
-        if(ch == '\n' || ch == '\r' || ch == ' ') {
+    for (char ch: c) {
+        if (ch == '\n' || ch == '\r' || ch == ' ') {
             break;
         }
         width_str += ch;
     }
     int width_ = std::stoi(c);
-    for (char ch : c) {
-        if(ch == '\n' || ch == '\r' || ch == ' ') {
+    for (char ch: c) {
+        if (ch == '\n' || ch == '\r' || ch == ' ') {
             break;
         }
         height_str += ch;
@@ -113,7 +113,7 @@ bool checkForPpm(const std::string &path, const std::string &message, bool outpu
     int height_ = std::stoi(c);
     int pixel_count = width_ * height_;
     if (output) {
-        if (pixel_count >= message.size() * 8 + MAX_MESSAGE_SIZE*8) {
+        if (pixel_count >= message.size() * 8 + MAX_MESSAGE_SIZE * 8) {
             std::cout << "File " << path << " can store message" << std::endl;
         } else {
             std::cout << "File " << path << " can not store message" << std::endl;

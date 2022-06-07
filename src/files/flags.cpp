@@ -3,8 +3,9 @@
 #include <vector>
 #include <map>
 
+
+// mapping command to switch number and expected number of arguments
 std::map<std::string, std::array<int, 2> > commandLineFlags() {
-    // mapping command to switch number and expected number of arguments
     return std::map<std::string, std::array<int, 2> >{
             {"--help",    {1, 2}},
             {"-h",        {1, 2}},

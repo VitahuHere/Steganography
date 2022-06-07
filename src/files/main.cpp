@@ -2,8 +2,8 @@
 #include <iostream>
 #include "../headers/flags.h"
 
-int main(int argc, const char *argv[]) {
-    /**
+
+/**
      * @brief Main function.
      * @param argc Number of arguments.
      * @param argv Array of arguments.
@@ -14,6 +14,7 @@ int main(int argc, const char *argv[]) {
      * If there are no arguments or flags, it prints general help.
      * If there are too little or too many arguments, it prints an error message.
      */
+int main(int argc, const char *argv[]) {
     if (argc == 1) {
         help();
         return 0;

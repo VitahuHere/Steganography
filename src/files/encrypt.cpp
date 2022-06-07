@@ -22,8 +22,7 @@ void writeToFile(std::fstream &file, const std::string &message);
 void offsetPpm(std::fstream &file);
 
 
-void encrypt(const std::string &path, const std::string &message) {
-    /**
+/**
      * @brief Encrypts message to file with given path
      * @param path - path to file
      * @param message - message to encrypt
@@ -32,6 +31,7 @@ void encrypt(const std::string &path, const std::string &message) {
      * Function determines if file extension is supported, then if message can fit inside the file
      * and finally calls appropriate function if no error is raised.
      */
+void encrypt(const std::string &path, const std::string &message) {
     if (!isSupported(path)) {
         std::cout << "File extension is not supported." << std::endl;
         return;
@@ -52,8 +52,7 @@ void encrypt(const std::string &path, const std::string &message) {
 }
 
 
-void encryptForBmp(const std::string &path, std::string message) {
-    /**
+/**
      * @brief Encrypts message to bmp file
      * @param path - path to file
      * @param message - message to encrypt
@@ -66,6 +65,7 @@ void encryptForBmp(const std::string &path, std::string message) {
      *    - we write new byte to file
      *    - repeat until all bits are written
      */
+void encryptForBmp(const std::string &path, std::string message) {
     message = fillMessage(message);
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
     file.seekg(getCharOffsetBmp(path), std::ios::beg);
@@ -75,8 +75,7 @@ void encryptForBmp(const std::string &path, std::string message) {
 }
 
 
-void encryptForPpm(const std::string &path, std::string message) {
-    /**
+/**
      * @brief Encrypts message to ppm file
      * @param path - path to file
      * @param message - message to encrypt
@@ -89,6 +88,7 @@ void encryptForPpm(const std::string &path, std::string message) {
      *   - we write new byte to file
      *   - repeat until all bits are written
      */
+void encryptForPpm(const std::string &path, std::string message) {
     message = fillMessage(message);
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
     offsetPpm(file);
@@ -98,8 +98,7 @@ void encryptForPpm(const std::string &path, std::string message) {
 }
 
 
-void offsetPpm(std::fstream &file) {
-    /**
+/**
      * @brief Offsets ppm file to the right position
      * @param file - file stream
      * @return void
@@ -108,6 +107,7 @@ void offsetPpm(std::fstream &file) {
      * It skips header of the file and stops at the first byte of the pixel array.
      * It is used to make sure that we are writing to the pixel array position in ppm file and not damage the header.
      */
+void offsetPpm(std::fstream &file) {
     std::string c;
     std::getline(file, c);
     do {
@@ -117,8 +117,7 @@ void offsetPpm(std::fstream &file) {
 }
 
 
-void writeToFile(std::fstream &file, const std::string &message) {
-    /**
+/**
      * @brief Writes message to file
      * @param file - file stream
      * @param message - message to write
@@ -130,6 +129,7 @@ void writeToFile(std::fstream &file, const std::string &message) {
      * We write new byte to file.
      * We repeat until all bits are written.
      */
+void writeToFile(std::fstream &file, const std::string &message) {
     for (char c: message) {
         std::array<unsigned char, 8> binary = toBinary(c);
         for (int i = 0; i < 8; i++) {

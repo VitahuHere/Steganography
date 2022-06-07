@@ -24,8 +24,7 @@ std::string printFilePermissions(const std::string &path);
 std::map<std::string, bool> getFilePermissions(const std::string &path);
 
 
-void info(const std::string &path) {
-    /**
+/**
      * @brief Prints information about the file.
      * @param path Path to the file.
      * @return void
@@ -35,6 +34,7 @@ void info(const std::string &path) {
      * If the file extension is supported, it prints the file extension, size, modification date and permissions.
      * If the file extension is not supported, prints an error message.
      */
+void info(const std::string &path) {
     if (isSupported(path)) {
         printFileInfo(path);
     } else {
@@ -43,8 +43,7 @@ void info(const std::string &path) {
 }
 
 
-void printFileInfo(const std::string &path) {
-    /**
+/**
      * @brief Prints information about the file.
      * @param path Path to the file.
      * @return void
@@ -52,6 +51,7 @@ void printFileInfo(const std::string &path) {
      * This function prints information about the file.
      * It prints the file name, extension, path, size, modification date and permissions.
      */
+void printFileInfo(const std::string &path) {
     std::cout << "File name: " << fs::path(path).filename() << std::endl;
     std::cout << "File extension: " + getFileExtension(path) << std::endl;
     std::cout << "File path: " << fs::absolute(path) << std::endl;
