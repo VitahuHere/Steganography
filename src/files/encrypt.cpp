@@ -71,6 +71,7 @@ void encryptForBmp(const std::string &path, std::string message) {
     file.seekg(getCharOffsetBmp(path), std::ios::beg);
     writeToFile(file, message);
     file.close();
+    std::cout<<"Message encrypted."<<std::endl;
 }
 
 
@@ -93,6 +94,7 @@ void encryptForPpm(const std::string &path, std::string message) {
     offsetPpm(file);
     writeToFile(file, message);
     file.close();
+    std::cout<<"Message encrypted."<<std::endl;
 }
 
 

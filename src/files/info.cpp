@@ -54,7 +54,7 @@ void printFileInfo(const std::string &path) {
      */
     std::cout << "File name: " << fs::path(path).filename() << std::endl;
     std::cout << "File extension: " + getFileExtension(path) << std::endl;
-    std::cout << "File path: " + path << std::endl;
+    std::cout << "File path: " << fs::absolute(path) << std::endl;
     std::cout << "File size: " << std::to_string(fs::file_size(path)) << " bytes" << std::endl;
     std::cout << "File modification date: " << getLastModified(path);
     std::cout << "File readable: " << (getFilePermissions(path).at("others_read") ? "yes" : "no") << std::endl;
