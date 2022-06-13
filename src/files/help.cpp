@@ -9,7 +9,7 @@ void help() {
     const char *helpMessage = R"(Picture stenography program.
     Encode and decode messages hidden inside images.
     - Author: Cong Minh Vu 11c s25026
-    - Supports .png, .bmp
+    - Supports .ppm, .bmp
 
     Usage: stenography.exe [OPTION]...
     Example: stenography.exe -e C:\image.png "Lorem ipsum"
