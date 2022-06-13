@@ -38,7 +38,7 @@ void info(const std::string &path) {
     if (isSupported(path)) {
         printFileInfo(path);
     } else {
-        std::cout << "File extension is not supported." << std::endl;
+        std::cout << "File extension is not supported or file not found." << std::endl;
     }
 }
 
@@ -70,8 +70,14 @@ std::string getFileExtension(const std::string &path) {
 
 
 bool isSupported(const std::string &path) {
+    try {
+        fs::file_size(path);
+    }
+    catch (const fs::filesystem_error &e) {
+        return false;
+    }
     fs::path p(path);
-    return std::ranges::any_of(getSupportedExtensions(), [&](const std::string &ext) {
+    return std::ranges::any_of(getSupportedExtensions(), [&p](const std::string &ext) {
         return p.extension() == ext;
     });
 }
