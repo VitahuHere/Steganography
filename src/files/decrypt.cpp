@@ -1,6 +1,5 @@
-//
-// Created by vumir on 26.05.2022.
-//
+// Author: Cong Minh Vu
+// Written on 26.05.2022
 
 #include <iostream>
 #include <string>
@@ -57,9 +56,9 @@ void decrypt(const std::string &path) {
  *     - for each byte we take LSB and store it in array
  *     - we convert array to decimal and read it as char
  *     - we add char to final string
+ * example output: Hello
  * @example
  * steganography.exe -d test.bmp
- * example output: Hello
  */
 void decryptForBmp(const std::string &path) {
     std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);

@@ -1,6 +1,5 @@
-//
-// Created by vumir on 26.04.2022.
-//
+// Author: Cong Minh Vu
+// Written on 26.05.2022
 
 #ifndef LEARNING_FLAGS_H
 #define LEARNING_FLAGS_H

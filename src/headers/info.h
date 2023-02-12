@@ -1,6 +1,5 @@
-//
-// Created by vumir on 27.05.2022.
-//
+// Author: Cong Minh Vu
+// Written on 26.05.2022
 
 #ifndef STEGANOGRAPHY_INFO_H
 #define STEGANOGRAPHY_INFO_H

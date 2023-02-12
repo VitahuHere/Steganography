@@ -1,3 +1,7 @@
+// Author: Cong Minh Vu
+// Written on 26.05.2022
+
+
 #include <bits/stdc++.h>
 #include <iostream>
 #include "../headers/flags.h"

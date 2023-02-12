@@ -1,6 +1,6 @@
-//
-// Created by vumir on 26.05.2022.
-//
+// Author: Cong Minh Vu
+// Written on 26.05.2022
+
 #include <string>
 #include <ctime>
 #include <iostream>

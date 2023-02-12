@@ -1,6 +1,5 @@
-//
-// Created by vumir on 26.05.2022.
-//
+// Author: Cong Minh Vu
+// Written on 26.05.2022
 
 #include <string>
 #include <fstream>
@@ -63,11 +62,11 @@ void encrypt(const std::string &path, const std::string &message) {
  *    - for each bit in array we take 1 byte from file and change LSB to be exactly the same as bit in array
  *    - we write new byte to file
  *    - repeat until all bits are written
- * @example
- * steganography.exe -e test.bmp "Hello"
  * message = "Hello"
  * messageLength = "0005"
  * messageToEncrypt = "0005Hello"
+ * @example
+ * steganography.exe -e test.bmp "Hello"
  */
 void encryptForBmp(const std::string &path, std::string message) {
     message = fillMessage(message);
