@@ -11,5 +11,8 @@ steganography.exe \[flags\] \[path_to_image\] \["message to encrypt"\]
 - **-c** | **--check** _path_to_file_ _"message_to_encrypt"_ => checks if message can be encrypted in the image specified in _path_to_file_
 - **-h** | **--help** => default flag. Shows usage and specs of the program
 
+## Supported files
+- For now, only PPM and BMP images are supported
+
 # Compilation
 Used CMake bundled with CLion.
